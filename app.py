@@ -16,7 +16,6 @@ app = Flask(__name__)
 
 
 def fetch_data():
-
     global cache, cache_timestamp
 
     if not cache.empty and (datetime.datetime.now() - cache_timestamp) < CACHE_TIMEOUT:
@@ -31,22 +30,31 @@ def fetch_data():
 # 今日を表示
 @app.route("/")
 def today_get():
- 
     df = fetch_data()
 
     dt_now = pd.Timestamp.now(tz="Asia/Tokyo").tz_localize(None)
+    dt_ytd = dt_now - pd.Timedelta(days=1)
 
     dt_830 = dt_now.replace(hour=8, minute=30, second=0, microsecond=0)
 
     if dt_now >= dt_830:
         df_today = df[df["date"].dt.date == dt_now.date()].copy()
     else:
-        df_today = df[df["date"].dt.date <= dt_now.date()].copy()
+        df_today = df[
+            (df["date"].dt.date == dt_now.date())
+            | ((df["date"].dt.date == dt_ytd.date()) & (df["type"] == "指定なし"))
+        ].copy()
 
     df_today["display"] = "show"
-    df_today["display"].mask((df_today["date"].dt.date == dt_now.date()) & (df_today["type"] != "指定なし"), "hide", inplace=True)
+    df_today["display"].mask(
+        (df_today["date"].dt.date == dt_now.date()) & (df_today["type"] != "指定なし"),
+        "hide",
+        inplace=True,
+    )
 
-    posts_by_hosp = df_today.groupby("date").apply(lambda x: x.to_dict(orient="records"))
+    posts_by_hosp = df_today.groupby("date").apply(
+        lambda x: x.to_dict(orient="records")
+    )
 
     return render_template("index.html", posts_by_hosp=posts_by_hosp)
 
@@ -54,10 +62,11 @@ def today_get():
 # 今月を表示
 @app.route("/list")
 def month_get():
-
     df_month = fetch_data()
 
-    posts_by_hosp = df_month.groupby("date").apply(lambda x: x.to_dict(orient="records"))
+    posts_by_hosp = df_month.groupby("date").apply(
+        lambda x: x.to_dict(orient="records")
+    )
 
     return render_template("list.html", posts_by_hosp=posts_by_hosp)
 
@@ -78,7 +87,6 @@ def page_not_found(error):
 
 # スクリプトとして直接実行した場合
 if __name__ == "__main__":
-
     # FlaskのWEBアプリケーションを起動
     app.run(debug=True)
 
