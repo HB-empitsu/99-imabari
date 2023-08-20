@@ -46,7 +46,7 @@ def today_get():
     df_today["display"] = "show"
     df_today["display"].mask((df_today["date"].dt.date == dt_now.date()) & (df_today["type"] != "指定なし"), "hide", inplace=True)
 
-    posts_by_hosp = df_today.groupby("date_week").apply(lambda x: x.to_dict(orient="records"))
+    posts_by_hosp = df_today.groupby("date").apply(lambda x: x.to_dict(orient="records"))
 
     return render_template("index.html", posts_by_hosp=posts_by_hosp)
 
@@ -57,7 +57,7 @@ def month_get():
 
     df_month = fetch_data()
 
-    posts_by_hosp = df_month.groupby("date_week").apply(lambda x: x.to_dict(orient="records"))
+    posts_by_hosp = df_month.groupby("date").apply(lambda x: x.to_dict(orient="records"))
 
     return render_template("list.html", posts_by_hosp=posts_by_hosp)
 

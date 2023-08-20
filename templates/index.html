@@ -3,7 +3,7 @@
 <main>
   <h2 class="page-head">今日の当番医</h2>
   {% for date, posts in posts_by_hosp.items() %}
-  <h3 class="page-subhead">{{ date }}</h3>
+  <h3 class="page-subhead">{{ posts[0]["date_week"] }}</h3>
   <div class="list-container">
     <div class="card-wrap">
       {% for post in posts %}
