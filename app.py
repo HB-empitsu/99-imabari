@@ -42,7 +42,10 @@ def today_get():
     else:
         df_today = df[
             (df["date"].dt.date == dt_now.date())
-            | ((df["date"].dt.date == dt_ytd.date()) & (df["type"] == "指定なし"))
+            | (
+                (df["date"].dt.date == dt_ytd.date())
+                & (df["time"].str.contains("翌日", na=False))
+            )
         ].copy()
 
     df_today["display"] = "show"
