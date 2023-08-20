@@ -7,7 +7,7 @@ import datetime
 
 CSV_URL = "https://raw.githubusercontent.com/HB-enpitsu/99-imabari-bot/main/latest.csv"
 
-CACHE_TIMEOUT = datetime.timedelta(hours=1)
+CACHE_TIMEOUT = datetime.timedelta(minutes=30)
 cache = pd.DataFrame()
 cache_timestamp = None
 
