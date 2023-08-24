@@ -1,7 +1,30 @@
 {% extends "base.html" %} {% block content %}
 
 <main>
-  <h2 class="page-head">今日の当番医</h2>
+  <h2 class="page-head">今月の当番医</h2>
+  <h3 class="page-subhead">テスト終了</h3>
+  <div class="list-container">
+    <div class="card-wrap">
+      <div class="card">
+        <p class="subtitle">至急</p>
+        <p class="title">ページ移転のお知らせ</p>
+        <img src="{{ url_for('static', filename='img/qr.png') }}" alt="" />
+        <p>
+          現在表示されているこちらの99いまばりは２０２３年８月３１日をもって停止いたします
+        </p>
+        <p>
+          サーバーの仕様により表示に遅延が発生しておりこの対応のためURLが変更になります
+        </p>
+        <p>新しいページは下記の通りです</p>
+        <p>
+          <a href="https://hb-enpitsu.github.io/99imabari/"
+            >https://hb-enpitsu.github.io/99imabari/</a
+          >
+        </p>
+        <p>引き続きよろしくお願いいたします</p>
+      </div>
+    </div>
+  </div>
   {% for date, posts in posts_by_hosp.items() %}
   <h3 class="page-subhead">{{ posts[0]["date_week"] }}</h3>
   <div class="list-container">
